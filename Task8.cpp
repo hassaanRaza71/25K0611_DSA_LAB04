@@ -7,27 +7,6 @@ struct Node {
     Node *prev;
 };
 
-Node* removeDuplicates(Node* head) {
-    if (head == NULL) {
-        return NULL;
-    }
-
-    Node* curr = head;
-    while (curr->next != NULL) {
-        if (curr->data == curr->next->data) {
-            Node* duplicate = curr->next;
-            curr->next = duplicate->next;
-            if (duplicate->next != NULL) {
-                duplicate->next->prev = curr;
-            }
-            delete duplicate;
-        } else {
-            curr = curr->next;
-        }
-    }
-    return head;
-}
-
 int tripletscheck(Node *head, int target) {
     if (head == NULL || head->next == NULL || head->next->next == NULL) {
         return 0;
