@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 struct Node {
@@ -6,39 +7,49 @@ struct Node {
     Node *next;
 };
 
-Node* evenNodes(Node *head){
-    Node* curr=head;
-    Node* even=NULL;
-    while(curr->!=NULL){
-        if(curr->data%==0){
-            if(even==NULL){
-                even=curr;
-            }
-            else{
-                even->next=curr;
-            }
-        }
-        
-    }
-    return even;
-}
-Node* oddNodes(Node *head){
-    Node* curr=head;
-    Node* odd=NULL;
-    while(curr->!=NULL){
-        if(curr->data%==1){
-            if(odd==NULL){
-                odd=curr;
-            }
-            else{
-                odd->next=curr;
+Node* evenNodes(Node *head) {
+    Node* curr = head;
+    Node* evenHead = NULL;
+    Node* evenTail = NULL;
+    
+    while (curr != NULL) {
+        if (curr->data % 2 == 0) {
+            Node* newNode = new Node{curr->data, NULL};
+            if (evenHead == NULL) {
+                evenHead = newNode;
+                evenTail = newNode;
+            } else {
+                evenTail->next = newNode;
+                evenTail = newNode;
             }
         }
-        
+        curr = curr->next;
     }
-    return odd;
+    return evenHead;
 }
-Node*sort(Node *head){
+
+Node* oddNodes(Node *head) {
+    Node* curr = head;
+    Node* oddHead = NULL;
+    Node* oddTail = NULL;
+    
+    while (curr != NULL) {
+        if (curr->data % 2 != 0) {
+            Node* newNode = new Node{curr->data, NULL};
+            if (oddHead == NULL) {
+                oddHead = newNode;
+                oddTail = newNode;
+            } else {
+                oddTail->next = newNode;
+                oddTail = newNode;
+            }
+        }
+        curr = curr->next;
+    }
+    return oddHead;
+}
+
+Node* sort(Node *head) {
     if (head == NULL || head->next == NULL) {
         return head;
     }
@@ -62,13 +73,19 @@ Node*sort(Node *head){
     return head;
 }
 
-Node* rearrange(Node* head){
-    Node *odd=sort(oddNodes(head));
-    Node *even=sort(evenNodes(even));
-    Node *curr=odd;
-    while(curr->next!=NULL){
-        currr=curr->next;
+Node* rearrange(Node* head) {
+    if (head == NULL) return NULL;
+
+    Node* odd = sort(oddNodes(head));
+    Node* even = sort(evenNodes(head));
+    
+    if (odd == NULL) return even;
+    
+    Node* curr = odd;
+    while (curr->next != NULL) {
+        curr = curr->next;
     }
-    curr->next=even;
+    curr->next = even;
+    
     return odd;
 }
